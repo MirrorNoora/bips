@@ -45,13 +45,13 @@ public class Abschlussarbeit {
         this.beginn_datum = text;
     }
 
-    public Antrag getAntrag() {
-        return antrag;
-    }
-
-    public void setAntrag(Antrag antrag) {
-        this.antrag = antrag;
-    }
+//    public Antrag getAntrag() {
+//        return antrag;
+//    }
+//
+//    public void setAntrag(Antrag antrag) {
+//        this.antrag = antrag;
+//    }
 
 
 
