@@ -22,10 +22,6 @@ private String titel;
 @Column(name = "mailadresse", nullable = false)
 private String mailadresse;
 
-@ManyToOne(targetEntity = Keyword.class, optional = false)
-@JoinColumn(name = "id_stichpunkt", referencedColumnName = "id_stichpunkt", nullable = false)
-private Stichpunkt stichpunkt;
-
 public Integer getId() {
         return id;
         }
@@ -35,7 +31,7 @@ public void setId(Integer id) {
         }
 
 public String getVorname() {
-        return name;
+        return vorname;
         }
 
 public void setVorname(String vorname) {
@@ -66,19 +62,11 @@ public void setMailadresse(String mailadresse) {
         this.mailadresse =mailadresse;
         }
 
-public Stichpunkt getStichpunkt() {
-        return keyword;
-        }
-
-public void setStichpunkt(Stichpunkt stichpunkt) {
-        this.stichpunkt = stichpunkt;
-        }
-
 @Override
 public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Supervisor that = (Supervisor) o;
+        Professor that = (Professor) o;
         return Objects.equals(getId(), that.getId());
         }
 
@@ -89,7 +77,7 @@ public int hashCode() {
 
 @Override
 public String toString() {
-        return name + " (" + (id == null ? "<null>" : id) + ')';
+        return vorname + " (" + (id == null ? "<null>" : id) + ')';
         }
         }
 

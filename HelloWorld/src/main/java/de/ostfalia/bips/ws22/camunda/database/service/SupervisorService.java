@@ -25,6 +25,6 @@ public class SupervisorService {
             return Collections.emptyList();
         }
 
-        return repository.findAllByKeyword(keyword);
+        return repository.findAllByKeyword(stichpunkt);
     }
 }
