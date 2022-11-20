@@ -55,6 +55,6 @@ public class Stichpunkt {
 
     @Override
     public String toString() {
-        return  titel + " (" + (id == null ? "<null>" : id) + ')';
+        return  titel + " (" + (id == null ? "<null>" : id) + "):"+beschreibung;
     }
 }

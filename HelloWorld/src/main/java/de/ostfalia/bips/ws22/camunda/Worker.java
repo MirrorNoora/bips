@@ -1,7 +1,11 @@
 package de.ostfalia.bips.ws22.camunda;
 
-import de.ostfalia.bips.ws22.camunda.database.domain.Keyword;
+
+import de.ostfalia.bips.ws22.camunda.database.domain.Professor;
+import de.ostfalia.bips.ws22.camunda.database.domain.Stichpunkt;
 import de.ostfalia.bips.ws22.camunda.database.service.KeywordService;
+import de.ostfalia.bips.ws22.camunda.database.service.ProfessorService;
+import de.ostfalia.bips.ws22.camunda.database.service.StichpunktService;
 import de.ostfalia.bips.ws22.camunda.database.service.SupervisorService;
 import de.ostfalia.bips.ws22.camunda.model.Option;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
@@ -27,13 +31,14 @@ public class Worker {
         SpringApplication.run(Worker.class, args);
     }
 
-    private final KeywordService keywordService;
-    private final SupervisorService supervisorService;
+    private final StichpunktService stichpunktService;
 
-    public Worker(KeywordService keywordService,
-                  SupervisorService supervisorService) {
-        this.keywordService = keywordService;
-        this.supervisorService = supervisorService;
+    private final ProfessorService professorService;
+
+    public Worker(StichpunktService stichpunktService,
+                  ProfessorService professorService) {
+        this.stichpunktService = stichpunktService;
+        this.professorService = professorService;
     }
 
     @ZeebeWorker(type = "hello-world", autoComplete = true)
@@ -48,45 +53,45 @@ public class Worker {
         return variables;
     }
 
-    @ZeebeWorker(type = "load-keywords", autoComplete = true)
-    public Map<String, Object> loadKeywords(final ActivatedJob job) {
+    @ZeebeWorker(type = "lade_Stichpunkte", autoComplete = true)
+    public Map<String, Object> ladeStichpunkte(final ActivatedJob job) {
         // Do the business logic
-        LOGGER.info("Load Keywords");
+        LOGGER.info("Lade Stichpunkte");
 
-        final List<Option<Integer>> keywords = keywordService.getRepository().findAll().stream()
-                .map(e -> new Option<>(e.getText(), e.getId()))
+        final List<Option<Integer>> stichpunkte = stichpunktService.getRepository().findAll().stream()
+                .map(e -> new Option<>(e.getTitel(), e.getId()))
                 .collect(Collectors.toList());
 
         // Probably add some process variables
         final HashMap<String, Object> variables = new HashMap<>();
-        variables.put("keywords", keywords);
+        variables.put("Stichpunkte", stichpunkte);
         return variables;
     }
 
-    @ZeebeWorker(type = "load-supervisors", autoComplete = true)
-    public Map<String, Object> loadSupervisors(final ActivatedJob job) {
+    @ZeebeWorker(type = "suche_Betreuer", autoComplete = true)
+    public Map<String, Object> sucheProfessor(final ActivatedJob job) {
         // Do the business logic
-        LOGGER.info("Load supervisors");
+        LOGGER.info("Suche passende Betreuer");
 
         // Get the
-        final Object keyword = job.getVariablesAsMap().get("keyword");
-        final Optional<Keyword> found;
-        if (keyword instanceof Integer) {
-            found = keywordService.getRepository().findById(((Integer) keyword));
-        } else if (keyword != null && keyword.toString().matches("\\d+")) {
-            found = keywordService.getRepository().findById(Integer.parseInt(keyword.toString()));
+        final Object stichpunkte = job.getVariablesAsMap().get("stichpunkte");
+        final Optional<Stichpunkt> found;
+        if (stichpunkte instanceof Integer) {
+            found = stichpunktService.getRepository().findById(((Integer) stichpunkte));
+        } else if (stichpunkte != null && stichpunkte.toString().matches("\\d+")) {
+            found = stichpunktService.getRepository().findById(Integer.parseInt(stichpunkte.toString()));
         } else {
             found = Optional.empty();
         }
-        final List<Option<String>> supervisors = found
-                .map(supervisorService::findAllByKeyword)
-                .orElse(supervisorService.getRepository().findAll()).stream()
-                .map(e -> new Option<>(e.getName(), e.getName()))
+        final List<Option<String>> professoren = found
+                .map(professorService::findAllByStichpunkt)
+                .orElse(professorService.getRepository().findAll()).stream()
+                .map(e -> new Option<>(e.getVorname(), e.getNachname()))
                 .collect(Collectors.toList());
 
         // Probably add some process variables
         final HashMap<String, Object> variables = new HashMap<>();
-        variables.put("supervisors", supervisors);
+        variables.put("Professoren", professoren);
         return variables;
     }
 }

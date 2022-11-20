@@ -12,7 +12,10 @@ import java.util.List;
 
 public interface ProfessorRepository extends JpaRepository<Professor, Integer>{
     @SuppressWarnings("JpaQlInspection")
-    @Query(value = "select DISTINCT p from Professor p INNER JOIN ProfessorHatStichpunkt phs ON phs.id.professor = p WHERE p.professor = :professor OR phs.id.stichpunkt = :stichpunkt ORDER BY p.vorname"
+    @Query(value = "select DISTINCT p from Professor p "+
+            "INNER JOIN ProfessorHatStichpunkt phs ON phs.id.professor = p " +
+            "WHERE p.professor = :professor OR phs.id.stichpunkt = :stichpunkt " +
+            "ORDER BY phs.gewicht DESC "
     )
-    List<Professor> findAllByStichpunkt(@Param("Stichpunkt")Stichpunkt stichpunkt);//和super..service那边reposi引用
+    List<Professor> findAllByStichpunkt(@Param("Stichpunkt")Stichpunkt stichpunkt);
 }
