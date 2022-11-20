@@ -7,6 +7,7 @@
         <setting name="provider-name" value="Hibernate" />
         <datasource-mapping>
           <factory-entry name="BIPS_WS22" value="a5c34638-3456-4ed4-bf28-cd75fdf069df" />
+          <factory-entry name="entityManagerFactory" value="a5c34638-3456-4ed4-bf28-cd75fdf069df" />
         </datasource-mapping>
         <naming-strategy-map />
       </configuration>
