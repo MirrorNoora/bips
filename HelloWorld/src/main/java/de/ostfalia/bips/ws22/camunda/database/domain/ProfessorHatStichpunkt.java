@@ -10,6 +10,9 @@ public class ProfessorHatStichpunkt {
     @EmbeddedId
     private Id id;
 
+    @Column(name = "gewicht", nullable = false)
+    private Integer gewicht;
+
     public ProfessorHatStichpunkt() {
     }
 
@@ -23,6 +26,14 @@ public class ProfessorHatStichpunkt {
 
     public void setId(Id id) {
         this.id = id;
+    }
+
+    public Integer getGewicht() {
+        return gewicht;
+    }
+
+    public void setGewicht(Integer gewicht) {
+        this.gewicht = gewicht;
     }
 
     @Override

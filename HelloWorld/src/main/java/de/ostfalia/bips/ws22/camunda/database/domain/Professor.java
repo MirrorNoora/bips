@@ -75,9 +75,15 @@ public int hashCode() {
         return Objects.hash(getId());
         }
 
-@Override
-public String toString() {
-        return vorname + " (" + (id == null ? "<null>" : id) + ')';
+        @Override
+        public String toString() {
+                return "Professor{" +
+                        "id=" + id +
+                        ", vorname='" + vorname + '\'' +
+                        ", nachname='" + nachname + '\'' +
+                        ", titel='" + titel + '\'' +
+                        ", mailadresse='" + mailadresse + '\'' +
+                        '}';
         }
-        }
+}
 

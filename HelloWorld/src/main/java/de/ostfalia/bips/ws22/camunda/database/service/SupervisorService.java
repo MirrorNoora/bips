@@ -1,8 +1,7 @@
 package de.ostfalia.bips.ws22.camunda.database.service;
 
-import de.ostfalia.bips.ws22.camunda.database.domain.Keyword;
+import de.ostfalia.bips.ws22.camunda.database.domain.Professor;
 import de.ostfalia.bips.ws22.camunda.database.domain.Stichpunkt;
-import de.ostfalia.bips.ws22.camunda.database.domain.Supervisor;
 import de.ostfalia.bips.ws22.camunda.database.repository.SupervisorRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,8 +20,8 @@ public class SupervisorService {
         return repository;
     }
 
-    public List<Supervisor> findAllByKeyword(Keyword keyword) {
-        if (keyword == null) {
+    public List<Professor> findAllByKeyword(Stichpunkt stichpunkt) {
+        if (stichpunkt== null) {
             return Collections.emptyList();
         }
 

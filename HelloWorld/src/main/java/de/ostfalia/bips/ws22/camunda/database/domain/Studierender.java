@@ -13,8 +13,8 @@ public class Studierender  {
     @Column(name = "id_studierender", nullable = false)
     private Integer id;
 
-    @Column(name = "mailaddress", nullable = false)
-    private String mailaddress;
+    @Column(name = "mailadresse", nullable = false)
+    private String mailadresse;
 
     @Column(name = "vorname", nullable = false)
     private String vorname;
@@ -28,12 +28,13 @@ public class Studierender  {
     public void setId(Integer id) {
         this.id = id;
     }
-    public String getMailaddress() {
-        return mailaddress;
+
+    public String getMailadresse() {
+        return mailadresse;
     }
 
-    public void setMailaddress(String mailaddress) {
-        this.mailaddress = mailaddress;
+    public void setMailadresse(String mailadresse) {
+        this.mailadresse = mailadresse;
     }
 
     public String getVorname() {
@@ -69,7 +70,7 @@ public class Studierender  {
     public String toString() {
         return "Studierender{" +
                 "id=" + id +
-                ", mailaddress='" + mailaddress + '\'' +
+                ", mailadresse='" + mailadresse + '\'' +
                 ", vorname='" + vorname + '\'' +
                 ", nachname='" + nachname + '\'' +
                 '}';

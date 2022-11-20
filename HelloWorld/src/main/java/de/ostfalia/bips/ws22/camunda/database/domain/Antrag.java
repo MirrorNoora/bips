@@ -18,12 +18,12 @@ public class Antrag {
     @JoinColumn(name = "id_studierender", referencedColumnName = "id_studierender", nullable = false)
     private Studierender studierender;
 
-    @ManyToOne(targetEntity = Studierender.class, optional = false)
+    @ManyToOne(targetEntity = Professor.class, optional = false)
     @JoinColumn(name = "id_professor", referencedColumnName = "id_professor", nullable = false)
     private Professor professor;
 
-    @Column(name = "title", nullable = false)
-    private String title;
+    @Column(name = "titel", nullable = false)
+    private String titel;
 
     @Column(name = "typ", nullable = false)
     private Integer typ;
@@ -63,12 +63,12 @@ public class Antrag {
         this.professor = professor;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitel() {
+        return titel;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTitel(String titel) {
+        this.titel = titel;
     }
 
     public Integer getTyp() {
@@ -130,7 +130,7 @@ public class Antrag {
                 "id=" + id +
                 ", studierender=" + studierender +
                 ", professor=" + professor +
-                ", title='" + title + '\'' +
+                ", titel='" + titel + '\'' +
                 ", typ=" + typ +
                 ", genehmigt_prof=" + genehmigt_prof +
                 ", genehmigt_pav=" + genehmigt_pav +
