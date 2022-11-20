@@ -17,5 +17,5 @@ public interface ProfessorRepository extends JpaRepository<Professor, Integer>{
             "WHERE p.professor = :professor OR phs.id.stichpunkt = :stichpunkt " +
             "ORDER BY phs.gewicht DESC "
     )
-    List<Professor> findAllByStichpunkt(@Param("Stichpunkt")Stichpunkt stichpunkt);
+    List<Professor> findAllByGewicht(@Param("Gewicht")Stichpunkt stichpunkt);
 }
