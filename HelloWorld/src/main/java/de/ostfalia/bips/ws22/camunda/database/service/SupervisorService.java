@@ -1,6 +1,7 @@
 package de.ostfalia.bips.ws22.camunda.database.service;
 
 import de.ostfalia.bips.ws22.camunda.database.domain.Keyword;
+import de.ostfalia.bips.ws22.camunda.database.domain.Stichpunkt;
 import de.ostfalia.bips.ws22.camunda.database.domain.Supervisor;
 import de.ostfalia.bips.ws22.camunda.database.repository.SupervisorRepository;
 import org.springframework.stereotype.Service;
