@@ -1,5 +1,7 @@
 package de.ostfalia.bips.ws22.camunda;
 
+import de.ostfalia.bips.ws22.camunda.database.domain.Antrag;
+import de.ostfalia.bips.ws22.camunda.database.domain.Professor;
 import de.ostfalia.bips.ws22.camunda.database.domain.Stichpunkt;
 import de.ostfalia.bips.ws22.camunda.database.domain.Studierender;
 import de.ostfalia.bips.ws22.camunda.database.repository.ProfessorRepository;
@@ -88,15 +90,12 @@ public class Worker {
         final Object stuNachname= job.getVariablesAsMap().get("stu_nachname");
         final Object stuEmail= job.getVariablesAsMap().get("stu_email");
         final Studierender studierender=new Studierender();
-        LOGGER.info(parseInt(stuID.toString())+ stuVorname.toString()+stuNachname.toString()+stuEmail.toString());
-
-
-//        Studierender studierender=new Studierender();
+        LOGGER.info("id:"+parseInt(stuID.toString())+ " Name:"+stuVorname.toString()+stuNachname.toString()+" email:"+stuEmail.toString());
         studierender.setId(parseInt(stuID.toString()));
         studierender.setVorname(stuVorname.toString());
         studierender.setNachname(stuNachname.toString());
         studierender.setMailadresse(stuEmail.toString());
-        studierenderService.save(studierender);
+        studierenderService.getRepository().save(studierender);
 
         // Get the Professoren
         final Object stichpunkt = job.getVariablesAsMap().get("stichpunkt");
@@ -108,10 +107,10 @@ public class Worker {
         } else {
             found = Optional.empty();
         }
-        final List<Option<String>> professoren = found
+        final List<Option<Integer>> professoren = found
                 .map(professorService::findAllByStichpunkt)
                 .orElse(professorService.getRepository().findAll()).stream()
-                .map(e -> new Option<>(e.getTitel()+e.getNachname(),e.getTitel()+e.getNachname()))
+                .map(e -> new Option<>(e.getTitel()+" "+e.getNachname(),e.getId()))
                 .collect(Collectors.toList());
 
         // Probably add some process variables
@@ -125,13 +124,31 @@ public class Worker {
         // Do the business logic
         LOGGER.info("Eintrag in DB anlegen");
 
-        final List<Option<Integer>> antrag = antragService.getRepository().findAll().stream()
+        final Object stichpunkt = job.getVariablesAsMap().get("stichpunkt");
+        final Object stuID= job.getVariablesAsMap().get("stu_id");
+        final Object profID= job.getVariablesAsMap().get("Professor");
+        final Object studiumTyp=job.getVariablesAsMap().get("studium_typ");
+        final Antrag antrag=new Antrag();
+        final Studierender studierender=new Studierender();
+        studierender.setId(parseInt(stuID.toString()));
+        final Professor prof=new Professor();
+        prof.setId(parseInt(profID.toString()));
+        antrag.setStudierender(studierender);
+        antrag.setProfessor(prof);
+        antrag.setTitel(stichpunktService.getRepository().findById(parseInt(stichpunkt.toString())).get().getTitel());
+        antrag.setTyp(parseInt(studiumTyp.toString()));
+        antrag.setGenehmigt_prof(0);
+        antrag.setGenehmigt_pav(0);
+        antrag.setGenehmigt_ssb(0);
+        antragService.getRepository().save(antrag);
+
+        final List<Option<Integer>> eintrag = antragService.getRepository().findAll().stream()
                 .map(e -> new Option<>(e.getTitel(), e.getId()))
                 .collect(Collectors.toList());
 
         // Probably add some process variables
         final HashMap<String, Object> variables = new HashMap<>();
-        variables.put("Antrag", antrag);
+        variables.put("Antrag", eintrag);
         return variables;
     }
 }

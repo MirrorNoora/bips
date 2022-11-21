@@ -37,7 +37,7 @@ public class Antrag {
     @Column(name = "genehmigt_ssb", nullable = false)
     private Integer genehmigt_ssb;
 
-    @Column(name = "begruendung_ablehnung", nullable = false)
+    @Column(name = "begruendung_ablehnung", nullable = true)
     private String begruendung_ablehnung;
 
     public Integer getId() {

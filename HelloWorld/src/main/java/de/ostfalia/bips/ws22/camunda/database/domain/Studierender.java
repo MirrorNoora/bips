@@ -8,8 +8,9 @@ import java.util.Objects;
 @Entity
 @Table(name = "studierender")
 public class Studierender  {
+
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_studierender", nullable = false)
     private Integer id;
 
@@ -51,6 +52,10 @@ public class Studierender  {
 
     public void setNachname(String nachname) {
         this.nachname = nachname;
+    }
+
+    public Studierender() {
+
     }
 
     @Override

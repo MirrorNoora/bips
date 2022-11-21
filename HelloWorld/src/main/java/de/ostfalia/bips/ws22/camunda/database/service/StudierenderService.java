@@ -23,15 +23,8 @@ public class StudierenderService {
         studierender.setVorname(studierender.getVorname());
         studierender.setNachname(studierender.getNachname());
         studierender.setMailadresse(studierender.getMailadresse());
-        return repository.save(studierender);
+        return repository.saveAndFlush(studierender);
     }
 
-    /*alle Schülerinformationen Iterierung*/
-//    public List<Studierender> list(){
-//        return studierenderREpository.findAll();
-//    }
-    /*add*/
-//    public void Studierenderadd(Studierender studierender){
-//        studierenderREpository.save(studierender);
-//    }
+
 }
