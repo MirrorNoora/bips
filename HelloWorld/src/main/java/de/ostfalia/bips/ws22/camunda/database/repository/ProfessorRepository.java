@@ -11,11 +11,10 @@ import javax.persistence.OrderBy;
 import java.util.List;
 
 public interface ProfessorRepository extends JpaRepository<Professor, Integer>{
-    @SuppressWarnings("JpaQlInspection")
-    @Query(value = "select DISTINCT p from Professor p "+
+    @Query(value = "select DISTINCT p from Professor p " +
             "INNER JOIN ProfessorHatStichpunkt phs ON phs.id.professor = p " +
-            "WHERE p.professor = :professor OR phs.id.stichpunkt = :stichpunkt " +
+            "WHERE phs.id.stichpunkt=:stichpunkt " +
             "ORDER BY phs.gewicht DESC "
     )
-    List<Professor> findAllByGewicht(@Param("Gewicht")Stichpunkt stichpunkt);
+    List<Professor> findAllByStichpunkt(@Param("stichpunkt")Stichpunkt stichpunkt);
 }

@@ -3,7 +3,6 @@ package de.ostfalia.bips.ws22.camunda.database.service;
 import de.ostfalia.bips.ws22.camunda.database.domain.Professor;
 import de.ostfalia.bips.ws22.camunda.database.domain.Stichpunkt;
 import de.ostfalia.bips.ws22.camunda.database.repository.ProfessorRepository;
-import de.ostfalia.bips.ws22.camunda.database.repository.SupervisorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -30,3 +29,4 @@ public class ProfessorService {
         return repository.findAllByStichpunkt(stichpunkt);
     }
 }
+

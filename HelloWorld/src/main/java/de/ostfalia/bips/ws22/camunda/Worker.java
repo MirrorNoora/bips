@@ -1,12 +1,12 @@
 package de.ostfalia.bips.ws22.camunda;
 
-
-import de.ostfalia.bips.ws22.camunda.database.domain.Professor;
 import de.ostfalia.bips.ws22.camunda.database.domain.Stichpunkt;
-import de.ostfalia.bips.ws22.camunda.database.service.KeywordService;
+import de.ostfalia.bips.ws22.camunda.database.domain.Studierender;
+import de.ostfalia.bips.ws22.camunda.database.repository.ProfessorRepository;
+import de.ostfalia.bips.ws22.camunda.database.service.AntragService;
 import de.ostfalia.bips.ws22.camunda.database.service.ProfessorService;
 import de.ostfalia.bips.ws22.camunda.database.service.StichpunktService;
-import de.ostfalia.bips.ws22.camunda.database.service.SupervisorService;
+import de.ostfalia.bips.ws22.camunda.database.service.StudierenderService;
 import de.ostfalia.bips.ws22.camunda.model.Option;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.spring.client.EnableZeebeClient;
@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.lang.Integer.parseInt;
+
 @SpringBootApplication
 @EnableZeebeClient
 public class Worker {
@@ -35,10 +37,16 @@ public class Worker {
 
     private final ProfessorService professorService;
 
+    private final StudierenderService studierenderService;
+
+    private final AntragService antragService;
+
     public Worker(StichpunktService stichpunktService,
-                  ProfessorService professorService) {
+                  ProfessorService professorService, StudierenderService studierenderService, AntragService antragService) {
         this.stichpunktService = stichpunktService;
         this.professorService = professorService;
+        this.studierenderService = studierenderService;
+        this.antragService = antragService;
     }
 
     @ZeebeWorker(type = "hello-world", autoComplete = true)
@@ -64,7 +72,7 @@ public class Worker {
 
         // Probably add some process variables
         final HashMap<String, Object> variables = new HashMap<>();
-        variables.put("Stichpunkte", stichpunkte);
+        variables.put("stichpunkte", stichpunkte);
         return variables;
     }
 
@@ -72,26 +80,58 @@ public class Worker {
     public Map<String, Object> sucheProfessor(final ActivatedJob job) {
         // Do the business logic
         LOGGER.info("Suche passende Betreuer");
+        ProfessorRepository s;
 
-        // Get the
-        final Object stichpunkte = job.getVariablesAsMap().get("stichpunkte");
+        //store students information
+        final Object stuID= job.getVariablesAsMap().get("stu_id");
+        final Object stuVorname= job.getVariablesAsMap().get("stu_vorname");
+        final Object stuNachname= job.getVariablesAsMap().get("stu_nachname");
+        final Object stuEmail= job.getVariablesAsMap().get("stu_email");
+        final Studierender studierender=new Studierender();
+        LOGGER.info(parseInt(stuID.toString())+ stuVorname.toString()+stuNachname.toString()+stuEmail.toString());
+
+
+//        Studierender studierender=new Studierender();
+        studierender.setId(parseInt(stuID.toString()));
+        studierender.setVorname(stuVorname.toString());
+        studierender.setNachname(stuNachname.toString());
+        studierender.setMailadresse(stuEmail.toString());
+        studierenderService.save(studierender);
+
+        // Get the Professoren
+        final Object stichpunkt = job.getVariablesAsMap().get("stichpunkt");
         final Optional<Stichpunkt> found;
-        if (stichpunkte instanceof Integer) {
-            found = stichpunktService.getRepository().findById(((Integer) stichpunkte));
-        } else if (stichpunkte != null && stichpunkte.toString().matches("\\d+")) {
-            found = stichpunktService.getRepository().findById(Integer.parseInt(stichpunkte.toString()));
+        if (stichpunkt instanceof Integer) {
+            found = stichpunktService.getRepository().findById(((Integer) stichpunkt));
+        } else if (stichpunkt != null && stichpunkt.toString().matches("\\d+")) {
+            found = stichpunktService.getRepository().findById(parseInt(stichpunkt.toString()));
         } else {
             found = Optional.empty();
         }
         final List<Option<String>> professoren = found
                 .map(professorService::findAllByStichpunkt)
                 .orElse(professorService.getRepository().findAll()).stream()
-                .map(e -> new Option<>(e.getVorname(), e.getNachname()))
+                .map(e -> new Option<>(e.getTitel()+e.getNachname(),e.getTitel()+e.getNachname()))
                 .collect(Collectors.toList());
 
         // Probably add some process variables
         final HashMap<String, Object> variables = new HashMap<>();
         variables.put("Professoren", professoren);
+        return variables;
+    }
+
+    @ZeebeWorker(type = "DB_eintrag", autoComplete = true)
+    public Map<String, Object> eintragDB(final ActivatedJob job) {
+        // Do the business logic
+        LOGGER.info("Eintrag in DB anlegen");
+
+        final List<Option<Integer>> antrag = antragService.getRepository().findAll().stream()
+                .map(e -> new Option<>(e.getTitel(), e.getId()))
+                .collect(Collectors.toList());
+
+        // Probably add some process variables
+        final HashMap<String, Object> variables = new HashMap<>();
+        variables.put("Antrag", antrag);
         return variables;
     }
 }

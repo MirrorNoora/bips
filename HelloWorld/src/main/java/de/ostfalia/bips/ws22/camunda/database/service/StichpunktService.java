@@ -1,6 +1,5 @@
 package de.ostfalia.bips.ws22.camunda.database.service;
 
-import de.ostfalia.bips.ws22.camunda.database.repository.KeywordRepository;
 import de.ostfalia.bips.ws22.camunda.database.repository.StichpunktRepository;
 import org.springframework.stereotype.Service;
 
