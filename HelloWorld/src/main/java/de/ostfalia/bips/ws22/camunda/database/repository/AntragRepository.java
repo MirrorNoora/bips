@@ -16,9 +16,10 @@ public interface AntragRepository extends JpaRepository<Antrag, Integer> {
             "where p.id = a.professor.id")
     List<Antrag> findallbyidprofessor(@Param("Professor") Antrag antrag);
 
-    @Query("select a.typ from Antrag a " +
-            "inner join Abschlussarbeit b ON b.antrag.id = a.id " +
-            "where b.antrag.id = a.id")
-    List<Antrag> findAllByidantrag(@Param("Typ")Integer typ);
+    @Query("select a from Antrag a " +
+            "inner join Abschlussarbeit b ON b.antrag.id = a.id ")
+    //select * from antrag
+        //inner join abschlussarbeit ON abschlussarbeit.id_antrag = antrag.id_antrag;
+    List<Antrag> findAllByidantrag(@Param("Typ")Antrag antrag);
 
 }
