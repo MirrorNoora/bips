@@ -1,12 +1,14 @@
 package de.ostfalia.bips.ws22.camunda.database.domain;
 
 import org.hibernate.boot.spi.AdditionalJaxbMappingProducer;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@Transactional
 @Table(name = "antrag")
 public class Antrag {
     @Id

@@ -5,21 +5,20 @@
   </bpmn:collaboration>
   <bpmn:process id="Process_1k84qyz" name="Hallo World" isExecutable="true">
     <bpmn:extensionElements>
-      <zeebe:userTaskForm id="UserTaskForm_0iqh6nb">
+      <zeebe:userTaskForm id="UserTaskForm_0iqh6nb">{
   "components": [
-    {
-      "values": [],
-      "label": "Betreuer",
+ {
+ "label": "Professor auswählen ",
       "type": "select",
       "id": "Field_0b3onpc",
-      "key": "field_0a0i945",
+      "key": "Professor",
+      "valuesKey": "Professoren",
       "validate": {
         "required": true
       },
-      "properties": {},
-      "defaultValue": "&lt;none&gt;"
+      "description": "wähle Professor"
     }
-  ],
+         ],
   "type": "default",
   "id": "Form_0fwfz88",
   "executionPlatform": "Camunda Cloud",
@@ -30,13 +29,41 @@
   },
   "schemaVersion": 5
 }</zeebe:userTaskForm>
-      <zeebe:userTaskForm id="userTaskForm_2i0mtb0"> "components": [
+      <zeebe:userTaskForm id="userTaskForm_2i0mtb0">{ "components": [
 {
-      "label": "Anfrage",
+      "label": "Antrag wählen",
+      "type": "select",
+      "id": "Field_0cae6lo",
+      "key": "antragID",
+      "valuesKey": "Antrag_Prof",
+      "validate": {
+        "required": true
+      }
+    },
+{
+      "values": [
+        {
+          "label": "Ja",
+          "value": "1"
+        },
+        {
+          "label": "Nein",
+          "value": "2"
+        }
+      ],
+      "label": "Anfrage annehmen？",
+      "type": "radio",
+      "id": "Field_0tbic0c",
+      "key": "ErgebnisProf",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Gründe für die Ablehnung und Alternative ",
       "type": "textfield",
-      "id": "Field_1hacgnk",
-      "key": "field_0tkacg3",
-      "description": "Anfrage bearbeiten"
+      "id": "Field_1wsu6r3",
+      "key": "grund"
     }
 ],
   "type": "default",
@@ -53,10 +80,23 @@
       <zeebe:userTaskForm id="userTaskForm_02nhqk4">{
   "components": [
     {
-      "label": "Erstpruefung",
-      "type": "checkbox",
-      "id": "Field_1c10x7m",
-      "key": "field_0qa4me7"
+      "values": [
+        {
+          "label": "Ja",
+          "value": "1"
+        },
+        {
+          "label": "Nein",
+          "value": "0"
+        }
+      ],
+      "label": "Erstpüfung bestanden?",
+      "type": "radio",
+      "id": "Field_0h7ijh8",
+      "key": "ErgebnisPAV",
+      "validate": {
+        "required": true
+      }
     }
   ],
   "type": "default",
@@ -71,11 +111,24 @@
 }</zeebe:userTaskForm>
       <zeebe:userTaskForm id="userTaskForm_2suhp5p">{
   "components": [
-  {
-      "label": "Vorleistungen_pruefen",
-      "type": "checkbox",
-      "id": "Field_1kwzqos",
-      "key": "field_1p8efnw"
+{
+      "values": [
+        {
+          "label": "Ja",
+          "value": "1"
+        },
+        {
+          "label": "Nein",
+          "value": "0"
+        }
+      ],
+      "label": "Prüfung der Vorleistungen bestanden?",
+      "type": "radio",
+      "id": "Field_0crtxyy",
+      "key": "ErgebnisSSB",
+      "validate": {
+        "required": true
+      }
     }
   ],
   "type": "default",
@@ -90,12 +143,15 @@
 }</zeebe:userTaskForm>
       <zeebe:userTaskForm id="userTaskForm_0ki9eh2"> {
   "components": [
-   {
-      "action": "submit",
-      "label": "Arbeit_anlegen",
-      "type": "button",
-      "id": "Field_158outy",
-      "key": "field_1n4jcee"
+  {
+      "label": "Beginndatum der Abschlussarbeit",
+      "type": "textfield",
+      "id": "Field_05rdcz7",
+      "key": "beginnDatum",
+      "validate": {
+        "required": true
+      },
+      "description": "(yyyy/MM/dd)"
     }
   ],
   "type": "default",
@@ -110,12 +166,73 @@
 }</zeebe:userTaskForm>
       <zeebe:userTaskForm id="userTaskForm_37nb19i">{
   "components": [
-{
-      "values": [],
-      "label": "antrag_ausfuellen",
-      "type": "taglist",
-      "id": "Field_0pujbfr",
-      "key": "field_13ssyda"
+ {
+ "label": "Stichpunkt auswählen ",
+      "type": "select",
+      "id": "Field_1ku1kly",
+      "key": "stichpunkt",
+      "valuesKey": "stichpunkte",
+      "validate": {
+        "required": true
+      },
+      "description": "wähle Stichpunkte"
+    },
+ {
+      "values": [
+        {
+          "label": "Bachelor",
+          "value": "0"
+        },
+        {
+          "label": "Master",
+          "value": "1"
+        }
+      ],
+      "label": "Studium",
+      "type": "radio",
+      "id": "Field_1nhnbe4",
+      "key": "studium_typ",
+      "defaultValue": "&lt;none&gt;",
+      "validate": {
+        "required": true
+      }
+    },
+ {
+      "label": "Martikel-Nr.:",
+      "type": "textfield",
+      "id": "Field_19swatm",
+      "key": "stu_id",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Vorname",
+      "type": "textfield",
+      "id": "Field_128xl5s",
+      "key": "stu_vorname",
+      "properties": {},
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Nachname",
+      "type": "textfield",
+      "id": "Field_0va04ec",
+      "key": "stu_nachname",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Emailadresse",
+      "type": "textfield",
+      "id": "Field_1l5s2vf",
+      "key": "stu_email",
+      "validate": {
+        "required": true
+      }
     }
   ],
   "type": "default",
@@ -126,7 +243,8 @@
     "name": "Camunda Modeler",
     "version": "5.4.1"
   },
-  "schemaVersion": 5</zeebe:userTaskForm>
+  "schemaVersion": 5
+}</zeebe:userTaskForm>
     </bpmn:extensionElements>
     <bpmn:laneSet id="LaneSet_1ndv13g">
       <bpmn:lane id="Lane_0j2cyjm" name="Studenten-Servicebüro">
@@ -174,11 +292,8 @@
     </bpmn:serviceTask>
     <bpmn:userTask id="Activity_1an2s7w" name="Wähle Betreuer">
       <bpmn:extensionElements>
-        <zeebe:properties>
-          <zeebe:property />
-        </zeebe:properties>
         <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_0iqh6nb" />
-        <zeebe:assignmentDefinition assignee="student" />
+        <zeebe:assignmentDefinition assignee="Studierender" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1v1oyc8</bpmn:incoming>
       <bpmn:outgoing>Flow_0qafpyu</bpmn:outgoing>
@@ -187,7 +302,7 @@
       <bpmn:documentation>Hier noch Grund Ablehnung + Alternativen abfragen</bpmn:documentation>
       <bpmn:extensionElements>
         <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_2i0mtb0" />
-        <zeebe:assignmentDefinition assignee="Professor" />
+        <zeebe:assignmentDefinition assignee="=Professor" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1jt1ips</bpmn:incoming>
       <bpmn:outgoing>Flow_1hjqtow</bpmn:outgoing>
@@ -205,23 +320,23 @@
     <bpmn:sequenceFlow id="Flow_1v1oyc8" sourceRef="Activity_1f6shkr" targetRef="Activity_1an2s7w" />
     <bpmn:sequenceFlow id="Flow_1hjqtow" sourceRef="Activity_1v46goz" targetRef="Activity_036f6u0" />
     <bpmn:sequenceFlow id="Flow_081vw00" name="angenommen" sourceRef="Gateway_1x3eqm6" targetRef="Activity_07l78pf">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=1</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=ErgebnisProf="1"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_00j53eu" sourceRef="Activity_07l78pf" targetRef="Activity_0zz6mbs" />
     <bpmn:sequenceFlow id="Flow_1s67xs5" name="ja" sourceRef="Gateway_0q341lr" targetRef="Activity_0xyiw9p">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=1</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=ErgebnisPAV="1"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_11ihzs2" sourceRef="Activity_0xyiw9p" targetRef="Activity_0nhv5ao" />
     <bpmn:sequenceFlow id="Flow_02vw2au" name="ja" sourceRef="Gateway_0l9ayqk" targetRef="Activity_0dddm1q">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=1</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=ErgebnisSSB="1"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_02f641s" name="nein" sourceRef="Gateway_0l9ayqk" targetRef="Gateway_1lx1k40">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=0</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=ErgebnisSSB="0"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:userTask id="Activity_10sc3z8" name="Antrag ausfüllen">
       <bpmn:extensionElements>
         <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_37nb19i" />
-        <zeebe:assignmentDefinition assignee="student" />
+        <zeebe:assignmentDefinition assignee="Studierender" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0us4bnp</bpmn:incoming>
       <bpmn:outgoing>Flow_0owlmik</bpmn:outgoing>
@@ -241,24 +356,25 @@
       <bpmn:outgoing>Flow_0m0uf2u</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_0m0uf2u" name="abgelehnt" sourceRef="Gateway_1x3eqm6" targetRef="Gateway_1lx1k40">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=0</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=ErgebnisProf="0"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_0fur0fc" sourceRef="Activity_036f6u0" targetRef="Gateway_1x3eqm6" />
     <bpmn:userTask id="Activity_07l78pf" name="Erstprüfung des Antrags">
       <bpmn:extensionElements>
         <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_02nhqk4" />
-        <zeebe:assignmentDefinition assignee="Prüfungsausschuss" />
+        <zeebe:assignmentDefinition assignee="PAV" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_081vw00</bpmn:incoming>
       <bpmn:outgoing>Flow_00j53eu</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:exclusiveGateway id="Gateway_0q341lr" name="Erstprüfung bestanden">
+      <bpmn:extensionElements />
       <bpmn:incoming>Flow_03nx8mt</bpmn:incoming>
       <bpmn:outgoing>Flow_1s67xs5</bpmn:outgoing>
       <bpmn:outgoing>Flow_0jlwwdy</bpmn:outgoing>
     </bpmn:exclusiveGateway>
     <bpmn:sequenceFlow id="Flow_0jlwwdy" name="nein" sourceRef="Gateway_0q341lr" targetRef="Gateway_1lx1k40">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=0</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=ErgebnisPAV="0"</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="Flow_09mldsp" sourceRef="Gateway_1lx1k40" targetRef="Activity_1ygogmv" />
     <bpmn:serviceTask id="Activity_0zz6mbs" name="Ergebnis von PAV in DB schreiben">
@@ -438,7 +554,7 @@ Abfrage Startdatum, falls nicht Tag der Annahme</bpmn:documentation>
       <bpmndi:BPMNShape id="Gateway_0l9ayqk_di" bpmnElement="Gateway_0l9ayqk" isMarkerVisible="true">
         <dc:Bounds x="1935" y="1035" width="50" height="50" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="1934" y="1095" width="54" height="27" />
+          <dc:Bounds x="1933" y="1094.5" width="54" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_1lx1k40_di" bpmnElement="Gateway_1lx1k40" isMarkerVisible="true">

@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `abschlussarbeit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `abschlussarbeit` (
-  `id_abschlussarbeit` int NOT NULL,
+  `id_abschlussarbeit` int NOT NULL AUTO_INCREMENT,
   `ende_datum` date NOT NULL,
   `beginn_datum` date NOT NULL,
   `id_antrag` int NOT NULL,

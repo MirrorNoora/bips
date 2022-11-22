@@ -8,19 +8,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "abschlussarbeit")
 public class Abschlussarbeit {
-//    @EmbeddedId
-//    private Abschlussarbeit.Id id;
 
-//    public Abschlussarbeit(){};
-
-//
-
-//    public Abschlussarbeit.Id getId() {
-//        return id;
-//    }
-//    public void setId(Abschlussarbeit.Id id) {
-//        this.id = id;
-//    }
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_abschlussarbeit", nullable = false)
@@ -32,7 +20,7 @@ public class Abschlussarbeit {
     @Column(name = "beginn_datum", nullable = false)
     private Date beginn_datum;
 
-    @ManyToOne(targetEntity = Antrag.class, optional = false)
+    @OneToOne(targetEntity = Antrag.class, optional = false)
     @JoinColumn(name = "id_antrag", referencedColumnName = "id_antrag", nullable = false)
     private Antrag antrag;
 
@@ -68,61 +56,6 @@ public class Abschlussarbeit {
         this.antrag = antrag;
     }
 
-    //    public Integer getIdAbscluss() {
-//        return idAbscluss;
-//    }
-//    public void setId(Integer idAbscluss) {
-//        this.idAbscluss = idAbscluss;
-//    }
-
-
-
-//    public String getEnde_datum() {
-//        return ende_datum;
-//    }
-//    public void setEnde_datum(String text) {
-//
-//        this.ende_datum = text;
-//    }
-//
-//    public String getBeginn_datum() {
-//        return beginn_datum;
-//    }
-//    public void setBeginn(String text) {
-//        this.beginn_datum = text;
-//    }
-
-//    @Embeddable
-//    public static class Id implements Serializable{
-//       @ManyToOne(targetEntity = Antrag.class, optional = false)
-//       @JoinColumn(name = "id_antrag", referencedColumnName = "id_antrag", nullable = false)
-//        private Antrag antrag;
-//
-//        public Id(Antrag antrag) {
-//            this.antrag = antrag;
-//        }
-//
-//        public Id() {
-//        }
-//
-//        public Antrag getAntrag() {
-//            return antrag;
-//        }
-//
-//        public void setAntrag(Antrag antrag) {
-//            this.antrag = antrag;
-//        }
-//
-//        @Override
-//        public int hashCode() {
-//            return Objects.hash(getAntrag());
-//        }
-//
-//        @Override
-//        public String toString() {
-//            return   " (" + (antrag == null ? "<null>" : antrag) + ')';
-//        }
-//    }
 
     @Override
     public boolean equals(Object o) {

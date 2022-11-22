@@ -10,8 +10,7 @@ import java.util.List;
 
 public interface AbschlussRepository extends JpaRepository<Abschlussarbeit, Integer> {
 
-    @Query("select a.beginn_datum from Abschlussarbeit a where a.beginn_datum = :date")
-    List<Abschlussarbeit> findAllbyDate(@Param("Datum") Date beginn_datum);
+
 
 
 }
